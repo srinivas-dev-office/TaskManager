@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_print
 
-
 import 'package:uuid/uuid.dart';
 
 import '../core/routes/exports.dart';
@@ -19,7 +18,7 @@ class TaskProvider extends ChangeNotifier {
     return taskBox.values.toList();
   }
 
-
+  /// TODO TASKS
   List<TaskModel> get todoTasks {
 
     return taskBox.values.where((e) {
@@ -80,40 +79,50 @@ class TaskProvider extends ChangeNotifier {
 
   }) async {
 
-    final formattedStatus =
-        status
-            .toLowerCase()
-            .replaceAll(" ", "");
+    try {
 
-    final task = TaskModel(
+      final formattedStatus =
+          status
+              .toLowerCase()
+              .replaceAll(" ", "");
 
-      id: const Uuid().v4(),
+      final task = TaskModel(
 
-      title: title,
+        id: const Uuid().v4(),
 
-      description:
-          description,
+        title: title,
 
-      startDate:
-          startDate,
+        description:
+            description,
 
-      endDate:
-          endDate,
+        startDate:
+            startDate,
 
-      status:
-          formattedStatus,
+        endDate:
+            endDate,
 
-      priority:
-          priority,
-    );
+        status:
+            formattedStatus,
 
-    /// SAVE TO HIVE
-    await taskBox.put(
-      task.id,
-      task,
-    );
+        priority:
+            priority,
+      );
 
-    notifyListeners();
+      /// SAVE TO HIVE
+      await taskBox.put(
+        task.id,
+        task,
+      );
+
+      /// UPDATE UI
+      notifyListeners();
+
+    } catch (e) {
+
+      print(
+        "ADD TASK ERROR : $e",
+      );
+    }
   }
 
   /// DELETE TASK
@@ -121,9 +130,18 @@ class TaskProvider extends ChangeNotifier {
     String id,
   ) async {
 
-    await taskBox.delete(id);
+    try {
 
-    notifyListeners();
+      await taskBox.delete(id);
+
+      notifyListeners();
+
+    } catch (e) {
+
+      print(
+        "DELETE TASK ERROR : $e",
+      );
+    }
   }
 
   /// UPDATE FULL TASK
@@ -145,37 +163,46 @@ class TaskProvider extends ChangeNotifier {
 
   }) async {
 
-    final updatedTask =
-        TaskModel(
+    try {
 
-      id: id,
+      final updatedTask =
+          TaskModel(
 
-      title: title,
+        id: id,
 
-      description:
-          description,
+        title: title,
 
-      startDate:
-          startDate,
+        description:
+            description,
 
-      endDate:
-          endDate,
+        startDate:
+            startDate,
 
-      status: status
-          .toLowerCase()
-          .replaceAll(" ", ""),
+        endDate:
+            endDate,
 
-      priority:
-          priority,
-    );
+        status: status
+            .toLowerCase()
+            .replaceAll(" ", ""),
 
-    /// UPDATE IN HIVE
-    await taskBox.put(
-      id,
-      updatedTask,
-    );
+        priority:
+            priority,
+      );
 
-    notifyListeners();
+      /// UPDATE IN HIVE
+      await taskBox.put(
+        id,
+        updatedTask,
+      );
+
+      notifyListeners();
+
+    } catch (e) {
+
+      print(
+        "UPDATE TASK ERROR : $e",
+      );
+    }
   }
 
   /// UPDATE TASK STATUS
@@ -187,40 +214,49 @@ class TaskProvider extends ChangeNotifier {
 
   }) async {
 
-    final task = taskBox.get(id);
+    try {
 
-    if (task != null) {
+      final task = taskBox.get(id);
 
-      final updatedTask =
-          TaskModel(
+      if (task != null) {
 
-        id: task.id,
+        final updatedTask =
+            TaskModel(
 
-        title: task.title,
+          id: task.id,
 
-        description:
-            task.description,
+          title: task.title,
 
-        startDate:
-            task.startDate,
+          description:
+              task.description,
 
-        endDate:
-            task.endDate,
+          startDate:
+              task.startDate,
 
-        status: status
-            .toLowerCase()
-            .replaceAll(" ", ""),
+          endDate:
+              task.endDate,
 
-        priority:
-            task.priority,
+          status: status
+              .toLowerCase()
+              .replaceAll(" ", ""),
+
+          priority:
+              task.priority,
+        );
+
+        await taskBox.put(
+          id,
+          updatedTask,
+        );
+
+        notifyListeners();
+      }
+
+    } catch (e) {
+
+      print(
+        "STATUS UPDATE ERROR : $e",
       );
-
-      await taskBox.put(
-        id,
-        updatedTask,
-      );
-
-      notifyListeners();
     }
   }
 
@@ -233,49 +269,67 @@ class TaskProvider extends ChangeNotifier {
 
   }) async {
 
-    final task = taskBox.get(id);
+    try {
 
-    if (task != null) {
+      final task = taskBox.get(id);
 
-      final updatedTask =
-          TaskModel(
+      if (task != null) {
 
-        id: task.id,
+        final updatedTask =
+            TaskModel(
 
-        title: task.title,
+          id: task.id,
 
-        description:
-            task.description,
+          title: task.title,
 
-        startDate:
-            task.startDate,
+          description:
+              task.description,
 
-        endDate:
-            task.endDate,
+          startDate:
+              task.startDate,
 
-        status: newStatus
-            .toLowerCase()
-            .replaceAll(" ", ""),
+          endDate:
+              task.endDate,
 
-        priority:
-            task.priority,
+          status: newStatus
+              .toLowerCase()
+              .replaceAll(" ", ""),
+
+          priority:
+              task.priority,
+        );
+
+        /// UPDATE IN HIVE
+        await taskBox.put(
+          id,
+          updatedTask,
+        );
+
+        notifyListeners();
+      }
+
+    } catch (e) {
+
+      print(
+        "MOVE TASK ERROR : $e",
       );
-
-      /// UPDATE IN HIVE
-      await taskBox.put(
-        id,
-        updatedTask,
-      );
-
-      notifyListeners();
     }
   }
 
   /// CLEAR ALL TASKS
   Future<void> clearTasks() async {
 
-    await taskBox.clear();
+    try {
 
-    notifyListeners();
+      await taskBox.clear();
+
+      notifyListeners();
+
+    } catch (e) {
+
+      print(
+        "CLEAR TASK ERROR : $e",
+      );
+    }
   }
 }

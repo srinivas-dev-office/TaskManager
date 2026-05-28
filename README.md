@@ -48,6 +48,7 @@ lib/
 ├── screens/
 ├── widgets/
 ├── Bottom_navbar.dart
+ ── splash_screen.dart
 └── main.dart
 ```
 

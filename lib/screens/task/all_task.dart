@@ -64,9 +64,17 @@ class _AllTaskScreenState
   /// REFRESH
   Future<void> onRefresh() async {
 
-    await Future.delayed(
-      const Duration(milliseconds: 600),
+    final provider =
+        Provider.of<TaskProvider>(
+      context,
+      listen: false,
     );
+
+    await Future.delayed(
+      const Duration(seconds: 1),
+    );
+
+    provider.notifyListeners();
 
     setState(() {});
   }
@@ -298,8 +306,8 @@ class _AllTaskScreenState
 
                     /// TAB BAR
                     TabBar(
+
                       dividerHeight: 0,
-                      
 
                       controller:
                           _tabController,
@@ -399,6 +407,11 @@ class _AllTaskScreenState
     return RefreshIndicator(
 
       onRefresh: onRefresh,
+
+      color: accentColor,
+
+      backgroundColor:
+          Colors.white,
 
       child: DragTarget<Map>(
 
@@ -618,21 +631,38 @@ class _AllTaskScreenState
 
                   Expanded(
 
-                    child: Center(
+                    child: ListView(
 
-                      child: Text(
+                      physics:
+                          const AlwaysScrollableScrollPhysics(),
 
-                        "Drop Tasks Here",
+                      children: [
 
-                        style: TextStyle(
-
-                          color: Colors
-                              .grey
-                              .shade500,
-
-                          fontSize: 16,
+                        SizedBox(
+                          height:
+                              MediaQuery.of(
+                            context,
+                          ).size.height *
+                              0.4,
                         ),
-                      ),
+
+                        Center(
+
+                          child: Text(
+
+                            "Pull Down To Refresh",
+
+                            style: TextStyle(
+
+                              color: Colors
+                                  .grey
+                                  .shade500,
+
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
 
@@ -644,7 +674,10 @@ class _AllTaskScreenState
                     child: ListView.builder(
 
                       physics:
-                          const BouncingScrollPhysics(),
+                          const AlwaysScrollableScrollPhysics(
+                        parent:
+                            BouncingScrollPhysics(),
+                      ),
 
                       padding:
                           const EdgeInsets.only(

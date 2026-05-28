@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:taskmanager/core/routes/exports.dart';
-import 'package:uuid/uuid.dart';
 
 class CreateTask extends StatefulWidget {
   const CreateTask({super.key});
@@ -38,13 +37,7 @@ class _CreateTaskState
 
   String selectedPriority = "Medium";
 
-  /// HIVE BOX
-  final taskBox =
-      Hive.box<TaskModel>("taskBox");
-
   /// COLORS
-
-
   final Color backgroundColor =
       const Color(0xffF5F7FB);
 
@@ -75,11 +68,13 @@ class _CreateTaskState
   /// SAVE TASK
   Future<void> saveTask() async {
 
-    final task = TaskModel(
+    await Provider.of<TaskProvider>(
+      context,
+      listen: false,
+    ).addTask(
 
-      id: const Uuid().v4(),
-
-      title: titleController.text,
+      title:
+          titleController.text,
 
       description:
           descriptionController.text,
@@ -90,16 +85,11 @@ class _CreateTaskState
       endDate:
           endDateController.text,
 
-      status: selectedStatus
-          .toLowerCase()
-          .replaceAll(" ", ""),
+      status:
+          selectedStatus,
 
-      priority: selectedPriority,
-    );
-
-    await taskBox.put(
-      task.id,
-      task,
+      priority:
+          selectedPriority,
     );
 
     ScaffoldMessenger.of(context)
@@ -109,6 +99,7 @@ class _CreateTaskState
 
         backgroundColor:
             kThirdColor,
+
         behavior:
             SnackBarBehavior.floating,
 
@@ -232,7 +223,6 @@ class _CreateTaskState
           borderRadius:
               BorderRadius.circular(14),
 
-          /// SHOW BELOW
           menuMaxHeight: 250,
 
           items: items.map((e) {
@@ -418,7 +408,7 @@ class _CreateTaskState
         centerTitle: true,
 
         backgroundColor:
-            kThirdColor  ,
+            kThirdColor,
 
         title: const Text(
 
@@ -754,13 +744,13 @@ class _CreateTaskState
                       ),
                     ),
 
-                    onPressed: () {
+                    onPressed: () async {
 
                       if (formKey
                           .currentState!
                           .validate()) {
 
-                        saveTask();
+                        await saveTask();
                       }
                     },
 
