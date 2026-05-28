@@ -1,11 +1,8 @@
 export 'package:flutter/material.dart';
 export 'package:flutter_screenutil/flutter_screenutil.dart';
 export 'package:get/get.dart';
-export 'package:google_fonts/google_fonts.dart';
 export 'package:hive/hive.dart';
 export 'package:hive_flutter/hive_flutter.dart';
-export 'package:lottie/lottie.dart';
-export 'package:permission_handler/permission_handler.dart';
 export 'package:provider/provider.dart';
 export 'package:table_calendar/table_calendar.dart';
 export 'package:taskmanager/Bottom_navbar.dart';
@@ -14,7 +11,6 @@ export 'package:taskmanager/core/routes/routes.dart';
 export 'package:taskmanager/core/theme/app_theme.dart';
 export 'package:taskmanager/models/auth/auth_model.dart';
 export 'package:taskmanager/models/task_model.dart';
-///// Providers
 export 'package:taskmanager/providers/auth_provider.dart';
 export 'package:taskmanager/providers/task_provider.dart';
 export 'package:taskmanager/screens/auth/login_screen.dart';
