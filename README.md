@@ -42,12 +42,12 @@ A simple and modern Flutter Task Management app with authentication, task manage
 
 ```bash
 lib/
+├── core/
 ├── models/
 ├── providers/
 ├── screens/
 ├── widgets/
-├── services/
-├── utils/
+├── Bottom_navbar.dart
 └── main.dart
 ```
 
