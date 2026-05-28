@@ -29,7 +29,7 @@ class AuthProvider extends ChangeNotifier {
     );
 
     /// DEMO LOGIN
-    if (email == 'admin@gmail.com' &&
+    if (email == 'srinivas@gmail.com' &&
         password == '123456') {
 
       final authData = AuthModel(
